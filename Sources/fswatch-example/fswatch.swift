@@ -1,6 +1,6 @@
 import ArgumentParser
 import Foundation
-import libfswatch_swift
+import fswatch
 
 @main
 struct Watch: ParsableCommand {
@@ -10,13 +10,16 @@ struct Watch: ParsableCommand {
 
     mutating func run() throws {
 
+        let path = path
         Task {
             do {
-                try await Monitor.shared.addPath("/tmp/foo") {
-                    print("path has changed!")
+                try await Monitor.shared.addPath(path) {
+                    print("path \(path) has changed!")
+                    Foundation.exit(0)
                 }
             } catch {
                 print("Error: \(error)")
+                Foundation.exit(-1)
             }
         }
 

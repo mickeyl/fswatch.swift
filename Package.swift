@@ -8,11 +8,11 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "libfswatch.swift",
-            targets: ["libfswatch.swift"]),
-        .executable(
             name: "fswatch",
             targets: ["fswatch"]),
+        .executable(
+            name: "fswatch-example",
+            targets: ["fswatch-example"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
@@ -22,17 +22,14 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .systemLibrary(name: "libfswatch", pkgConfig: "libfswatch"),
         .target(
-            name: "libfswatch.swift",
+            name: "fswatch",
             dependencies: ["libfswatch"]),
         .executableTarget(
-            name: "fswatch",
+            name: "fswatch-example",
             dependencies: [
-                "libfswatch.swift",
+                "fswatch",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 ]
-        ),
-        .testTarget(
-            name: "libfswatch.swiftTests",
-            dependencies: ["libfswatch.swift"]),
+        )
     ]
 )
