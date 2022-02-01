@@ -1,1 +1,1 @@
-#include <c/libfswatch.h>
+#include <libfswatch/c/libfswatch.h>
