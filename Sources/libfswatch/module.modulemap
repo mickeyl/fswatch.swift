@@ -1,0 +1,4 @@
+module libfswatch {
+    umbrella header "libfswatch.h"
+    link "fswatch"
+}
