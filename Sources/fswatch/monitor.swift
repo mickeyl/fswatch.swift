@@ -52,11 +52,11 @@ public actor Monitor {
     }()
 
     public func addPath(_ path: String, then: @escaping Completion) throws {
-
-        try checked { path.withCString { fsw_add_path(self.session, $0) } }
-        let watch = Watch(path: path, then: then)
+        let realpath = try self.realpath(path)
+        try checked { realpath.withCString { fsw_add_path(self.session, $0) } }
+        let watch = Watch(path: realpath, then: then)
         let startMonitor = self.watches.isEmpty
-        self.watches[path] = watch
+        self.watches[realpath] = watch
         guard startMonitor else { return }
         self.startMonitor()
     }
@@ -91,4 +91,9 @@ extension Monitor {
         }
     }
 
+    private func realpath(_ path: String) throws -> String {
+
+        guard let p = Foundation.realpath(path, nil) else { throw Error.invalidPath }
+        return String(cString: p)
+    }
 }
